@@ -4,7 +4,7 @@ from blog_app.models import Blog, Comment
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseRedirect
-
+from django.core.paginator import Paginator
 
 class LoginView(TemplateView):
     template_name = "login/login.html"
@@ -39,14 +39,24 @@ class HomeView(LoginRequiredMixin, TemplateView):
     login_url = '/login'
     redirect_field_name = 'redirect_to'
 
-   
-
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['blog_list'] = Blog.objects.all()
+        page = request.GET.get("page")
+        number_of_entries_per_page = 5
+        pg = Paginator(Blog.objects.all(), number_of_entries_per_page)
+        if not page:
+            page = 1
+        else:
+            page = int(page)
+        next_page = page+1 if pg.get_page(page).has_next() else page
+        previous_page = page - 1 if pg.get_page(page).has_previous() else page
+        blog_list_obj = pg.get_page(page) 
+        context["next_page"] = next_page
+        context["previous_page"] = previous_page
+        context['blog_list_obj'] = blog_list_obj
         context['show_nav'] = True
-        return context
-
+        
+        return super().render_to_response(context)
 
 
 

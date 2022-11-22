@@ -3,20 +3,34 @@
 {% block mainblock %}
 <div class="main-container">
 
-    
+
     <div class="content-list">
-        <h1>Blogs</h1>
-        {%for i in blog_list%}
-        <a href="/blog/{{i.id}}">
-        <div class="content">
-            <h3 class="content-title">{{i.title}}</h3>
-            <p class="content-text">{{i.content | truncatechars:255}}</p>
+        <div class="blog-header">
+            <h1>Blogs</h1>
+            <div class="navigator">
+                <a class="navigate_button" href="/home?page={{previous_page}}">
+                    previous
+                </a>
+                |
+                <a class="navigate_button" href="/home?page={{next_page}}">
+                    next
+                </a>
+                <p class="nav_context">{{blog_list_obj}}</p>
+            </div>
+
         </div>
+
+        {%for i in blog_list_obj.object_list%}
+        <a href="/blog/{{i.id}}">
+            <div class="content">
+                <h3 class="content-title">{{i.title}}</h3>
+                <p class="content-text">{{i.content | truncatechars:255}}</p>
+            </div>
         </a>
         {% endfor %}
 
     </div>
-    
+
 </div>
 
 
@@ -25,15 +39,48 @@
 
 {% block styleblock %}
 <style>
+    .navigate_button {
+        font-weight: bold;
+        font-size: 15px;
+    }
+    .nav_context {
+        color: blue;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .navigator {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .navigator>*:hover {
+        color: rgb(57, 157, 240);
+    }
+
+    .navigator>* {
+        padding: 0px 10px;
+    }
+
+    .blog-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .blog-header>* {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
     .main-container {
-        
+
         width: 100%;
     }
 
-    a{ 
+    a {
         text-decoration: none;
         color: black;
-     }
+    }
 
 
 
@@ -63,7 +110,5 @@
         max-width: 800px;
         margin: 20px auto;
     }
-
-
 </style>
 {% endblock %}
