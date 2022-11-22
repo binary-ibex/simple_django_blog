@@ -2,7 +2,11 @@
 
 {% block mainblock %}
 <div class="main-container">
-    <a href="/home">Back to home</a>
+    <div class="blog-header">
+        <a class="back_to_home" href="/home">Back to home</a>
+        <a class="share_blog" href="#">share the blog via email</a>
+    </div>
+    
     <h1 class="blog-title">{{blog.title}}</h1>
     <p class="blog-content">{{blog.content}}</p>
 
@@ -37,6 +41,22 @@
 
 {% block styleblock %}
 <style>
+    .blog-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .share_blog {
+        font-weight: bold;
+        color: rgb(0, 162, 255);
+        margin: 20px;
+        text-decoration: none;
+    }
+    .back_to_home {
+        font-weight: bold;
+        margin: 20px;
+        text-decoration: none;
+    }
     .profile-name {
         font-weight: bold;
     }
